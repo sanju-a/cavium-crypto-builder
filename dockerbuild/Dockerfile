@@ -52,7 +52,7 @@ RUN echo -n "Downloading linux kernel ${KERNEL_VERSION} source code: " && \
     echo "Successfully downloaded the linux kernel source code for ${KERNEL_VERSION}"
 
 # Compile cavium nitrox driver in Linux kernel 
-RUN    ls -l /tmp/crypto/ && cd /tmp/crypto/linux && git checkout v${KERNEL_VERSION} && \
+RUN    ls -l /tmp/crypto/ && cd /tmp/crypto/linux && git checkout v${KERNEL_VERSION} && BUILD_ARCH=$( uname -m ) && \
        echo -e "\n ===========================\n  Configure Linux Kernel \n ============================\n" && \
        make defconfig && \
        echo -e "\n\n ===========================\n Configured Linux Kernel \n =========================== \n\n" && \
@@ -61,6 +61,9 @@ RUN    ls -l /tmp/crypto/ && cd /tmp/crypto/linux && git checkout v${KERNEL_VERS
        sed -i '/CONFIG_CRYPTO_DEV_NITROX=m/a CONFIG_CRYPTO_DEV_NITROX_CNN55XX=m' .config && \
        echo -e "\n\n ===========================\n Configured Cavium Nitrox driver \n =========================== \n\n" && \
        echo -e "\n\n ===========================\n Compile Cavium Nitrox driver \n =========================== \n\n" && \
+       if [[ $BUILD_ARCH == *"aarch64"* ]]; then \
+          make vmlinux; \
+       fi && \
        make modules_prepare && \
        make drivers/crypto/cavium/nitrox/n5pf.ko && \
        echo -e "\n\n ===========================\n Compiled Cavium Nitrox driver \n =========================== \n\n" && \
