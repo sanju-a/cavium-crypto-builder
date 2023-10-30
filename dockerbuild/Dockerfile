@@ -97,4 +97,7 @@ ARG CAVIUM_CRYPTO_NITROX_MODULE_PATH="/tmp/crypto/linux/drivers/crypto/cavium/ni
 ARG CAVIUM_CRYPTO_THUNDER_MODULE_PATH="/tmp/crypto/linux/drivers/net/ethernet/cavium/thunder/"
 
 COPY --from=zreis-cavium-crypto-compiler ${CAVIUM_CRYPTO_MODULE_PATH}/n5pf.ko .
-COPY --from=zreis-cavium-crypto-compiler ${CAVIUM_CRYPTO_THUNDER_MODULE_PATH}/*.ko .
+COPY --from=zreis-cavium-crypto-compiler ${CAVIUM_CRYPTO_THUNDER_MODULE_PATH}/nicpf.ko .
+COPY --from=zreis-cavium-crypto-compiler ${CAVIUM_CRYPTO_THUNDER_MODULE_PATH}/nicvf.ko .
+COPY --from=zreis-cavium-crypto-compiler ${CAVIUM_CRYPTO_THUNDER_MODULE_PATH}/thunder_xcv.ko .
+COPY --from=zreis-cavium-crypto-compiler ${CAVIUM_CRYPTO_THUNDER_MODULE_PATH}/thunder_bgx.ko .
